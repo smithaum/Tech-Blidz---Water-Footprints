@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Logout</title>
+    <style>
+        body {
+            text-align: center; /* Center align text */
+        }
+        #waterImage {
+            width: 500px; /* Adjust width as needed */
+            height: auto;
+            margin-top: 50px; /* Add margin to separate from text */
+        }
+    </style>
+    <script>
+        function confirmLogout() {
+            var logout = confirm("Are you sure you want to logout?");
+            if (logout) {
+                window.location.href = "Untitled-1.html"; // Redirect to login page
+            }
+        }
+    </script>
+</head>
+<body>
+    <h1>Logout</h1>
+    <img id="waterImage" src="https://tse3.mm.bing.net/th?id=OIP.Z2mnaXe1Ou4INd-s9hwXnwHaE8&pid=Api&P=0&h=180" alt="Water Image"> <!-- Replace "water_image.jpg" with your actual image filename -->
+    <p>Click the button below to logout.</p>
+    <button onclick="confirmLogout()">Logout</button>
+</body>
+</html>

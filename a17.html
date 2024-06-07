@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Water Footprint Calculator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            text-align: center; /* Center align the content */
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+        }
+        input[type="number"] {
+            width: 100px;
+            padding: 5px;
+            margin-bottom: 10px;
+        }
+        button {
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        #result {
+            margin-top: 20px;
+            text-align: center;
+        }
+        #waterFootprint {
+            text-align: left;
+            display: inline-block;
+            text-align: left;
+        }
+    </style>
+</head>
+<body>
+    <h2>Water Footprint Calculator</h2>
+    <form id="waterFootprintForm">
+        <label for="showerTime">Shower Time (minutes per day):</label>
+        <input type="number" id="showerTime" required onkeydown="moveToNext(event, 'drinkingWater')" oninput="this.value = Math.abs(this.value)"><br>
+        <label for="drinkingWater">Drinking Water Consumption (liters per day):</label>
+        <input type="number" id="drinkingWater" required onkeydown="moveToNext(event, 'twoWheelerWash')" oninput="this.value = Math.abs(this.value)"><br>
+        <label for="twoWheelerWash">Two-Wheeler Washes per week:</label>
+        <input type="number" id="twoWheelerWash" required onkeydown="moveToNext(event, 'fourWheelerWash')" oninput="this.value = Math.abs(this.value)"><br>
+        <label for="fourWheelerWash">Four-Wheeler Washes per week:</label>
+        <input type="number" id="fourWheelerWash" required onkeydown="moveToNext(event, 'dishwasher')" oninput="this.value = Math.abs(this.value)"><br>
+        <label for="dishwasher">Dishwasher Uses per day:</label>
+        <input type="number" id="dishwasher" required onkeydown="moveToNext(event, 'laundry')" oninput="this.value = Math.abs(this.value)"><br>
+        <label for="laundry">Laundry Loads per week:</label>
+        <input type="number" id="laundry" required oninput="this.value = Math.abs(this.value)"><br>
+        <button type="button" onclick="calculateWaterFootprint()">Calculate</button>
+    </form>
+
+    <div id="result" style="display: none;">
+        <h3>Your Total Water Footprint:</h3>
+        <p id="waterFootprint"></p>
+    </div>
+
+    <script>
+        function moveToNext(event, nextInputId) {
+            if (event.keyCode === 13) { // 13 is the Enter key code
+                document.getElementById(nextInputId).focus();
+            }
+        }
+
+        function calculateWaterFootprint() {
+            const showerTime = parseInt(document.getElementById('showerTime').value);
+            const drinkingWater = parseInt(document.getElementById('drinkingWater').value);
+            const twoWheelerWash = parseInt(document.getElementById('twoWheelerWash').value) / 7; // Convert to per day
+            const fourWheelerWash = parseInt(document.getElementById('fourWheelerWash').value) / 7; // Convert to per day
+            const dishwasher = parseInt(document.getElementById('dishwasher').value);
+            const laundry = parseInt(document.getElementById('laundry').value) / 7; // Convert to per day
+
+            // Validate inputs to ensure they are numbers
+            if (isNaN(showerTime) || isNaN(drinkingWater) || isNaN(twoWheelerWash) || isNaN(fourWheelerWash) || isNaN(dishwasher) || isNaN(laundry)) {
+                alert("Please enter valid numbers for all inputs.");
+                return;
+            }
+
+            // Calculate water footprint for each activity
+            const showerFootprint = showerTime * 8; // 8 liters per minute
+            const drinkingWaterFootprint = drinkingWater;
+            const twoWheelerWashFootprint = twoWheelerWash * 30; // Assuming 30 liters per wash
+            const fourWheelerWashFootprint = fourWheelerWash * 80; // Assuming 80 liters per wash
+            const dishwasherFootprint = dishwasher * 12; // Assuming 12 liters per use
+            const laundryFootprint = laundry * 50; // Assuming 50 liters per load
+
+            // Calculate total water footprint
+            const totalWaterFootprint = showerFootprint + drinkingWaterFootprint +
+                                         twoWheelerWashFootprint + fourWheelerWashFootprint +
+                                         dishwasherFootprint + laundryFootprint;
+
+            // Build the output with logic explanations and units
+            const output = `
+                <strong>Shower Time:</strong> ${showerFootprint} liters (8 liters per minute, per day)<br>
+                <strong>Drinking Water Consumption:</strong> ${drinkingWaterFootprint} liters (per day)<br>
+                <strong>Two-Wheeler Washes:</strong> ${twoWheelerWashFootprint} liters (30 liters per wash, per day)<br>
+                <strong>Four-Wheeler Washes:</strong> ${fourWheelerWashFootprint} liters (80 liters per wash, per day)<br>
+                <strong>Dishwasher Uses:</strong> ${dishwasherFootprint} liters (12 liters per use, per day)<br>
+                <strong>Laundry Loads:</strong> ${laundryFootprint} liters (50 liters per load, per day)<br>
+                <hr>
+                <strong>Total Water Footprint:</strong> ${totalWaterFootprint} liters (per day)
+            `;
+
+            document.getElementById('result').style.display = 'block';
+            document.getElementById('waterFootprint').innerHTML = output;
+        }
+    </script>
+</body>
+</html>
